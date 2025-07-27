@@ -358,6 +358,180 @@ const buscarPeliculas = async (req, res) => {
     }
 };
 
+// ✅ Obtener próximos lanzamientos con validación si no hay resultados
+const obtenerProximosLanzamientos = async (req, res) => {
+    try {
+        const hoy = new Date();
+
+        const peliculas = await Pelicula.findAll({
+            where: {
+                fecha_estreno: {
+                    [Op.gt]: hoy  // Fechas futuras
+                }
+            },
+            order: [['fecha_estreno', 'ASC']],
+            include: [
+                { model: Actor, as: 'actores', through: { attributes: ['personaje'] } },
+                { model: Director, as: 'directores' },
+                { model: Compania, as: 'companias' },
+                { model: Genero, as: 'generos' },
+                { model: Idioma, as: 'idiomas' }
+            ]
+        });
+
+        if (peliculas.length === 0) {
+            return res.status(200).json({ mensaje: 'No hay próximos lanzamientos disponibles.' });
+        }
+
+        const peliculasLimpias = peliculas.map(p => {
+            const data = p.toJSON();
+            data.actores = data.actores.map(actor => ({
+                id: actor.id,
+                nombre: actor.nombre,
+                imagen_url: actor.imagen_url,
+                personaje: actor.PeliculaActor?.personaje || null
+            }));
+            data.directores = data.directores.map(d => ({
+                id: d.id,
+                nombre: d.nombre,
+                imagen_url: d.imagen_url
+            }));
+            data.companias = data.companias.map(c => ({
+                id: c.id,
+                nombre: c.nombre,
+                imagen_url: c.imagen_url
+            }));
+            data.generos = data.generos.map(g => ({ id: g.id, nombre: g.nombre }));
+            data.idiomas = data.idiomas.map(i => ({ id: i.id, nombre: i.nombre }));
+            return data;
+        });
+
+        res.json({ total: peliculasLimpias.length, lanzamientos: peliculasLimpias });
+    } catch (error) {
+        console.error('Error al obtener lanzamientos:', error);
+        res.status(500).json({ error: 'Error interno', detalle: error.message });
+    }
+};
+
+
+// ✅ Obtener película aleatoria
+const obtenerPeliculaAleatoria = async (req, res) => {
+    try {
+        const cantidad = await Pelicula.count();
+
+        if (cantidad === 0) {
+            return res.status(404).json({ error: 'No hay películas disponibles' });
+        }
+
+        const offset = Math.floor(Math.random() * cantidad);
+        const pelicula = await Pelicula.findOne({
+            offset,
+            include: [
+                { model: Actor, as: 'actores', through: { attributes: ['personaje'] } },
+                { model: Director, as: 'directores' },
+                { model: Compania, as: 'companias' },
+                { model: Genero, as: 'generos' },
+                { model: Idioma, as: 'idiomas' }
+            ]
+        });
+
+        if (!pelicula) {
+            return res.status(404).json({ error: 'No se encontró película aleatoria' });
+        }
+
+        const data = pelicula.toJSON();
+        data.actores = data.actores.map(actor => ({
+            id: actor.id,
+            nombre: actor.nombre,
+            imagen_url: actor.imagen_url,
+            personaje: actor.PeliculaActor?.personaje || null
+        }));
+        data.directores = data.directores.map(d => ({
+            id: d.id,
+            nombre: d.nombre,
+            imagen_url: d.imagen_url
+        }));
+        data.companias = data.companias.map(c => ({
+            id: c.id,
+            nombre: c.nombre,
+            imagen_url: c.imagen_url
+        }));
+        data.generos = data.generos.map(g => ({ id: g.id, nombre: g.nombre }));
+        data.idiomas = data.idiomas.map(i => ({ id: i.id, nombre: i.nombre }));
+
+        res.json(data);
+
+    } catch (error) {
+        console.error('Error al obtener película aleatoria:', error);
+        res.status(500).json({ error: 'Error interno', detalle: error.message });
+    }
+};
+
+
+const obtenerPeliculasPorIdGenero = async (req, res) => {
+    const { id } = req.params;  
+    const generoId = parseInt(id);
+
+    try {
+        const genero = await Genero.findByPk(generoId);
+
+        if (!genero) {
+            return res.status(404).json({ error: 'Género no encontrado' });
+        }
+
+        const peliculas = await Pelicula.findAll({
+            include: [
+                {
+                    model: Genero,
+                    as: 'generos',
+                    where: { id: generoId }
+                },
+                { model: Actor, as: 'actores', through: { attributes: ['personaje'] } },
+                { model: Director, as: 'directores' },
+                { model: Compania, as: 'companias' },
+                { model: Idioma, as: 'idiomas' }
+            ],
+            order: [['id', 'DESC']]
+        });
+
+        const peliculasLimpias = peliculas.map(p => {
+            const data = p.toJSON();
+            data.actores = data.actores.map(actor => ({
+                id: actor.id,
+                nombre: actor.nombre,
+                imagen_url: actor.imagen_url,
+                personaje: actor.PeliculaActor?.personaje || null
+            }));
+            data.directores = data.directores.map(d => ({
+                id: d.id,
+                nombre: d.nombre,
+                imagen_url: d.imagen_url
+            }));
+            data.companias = data.companias.map(c => ({
+                id: c.id,
+                nombre: c.nombre,
+                imagen_url: c.imagen_url
+            }));
+            data.idiomas = data.idiomas.map(i => ({
+                id: i.id,
+                nombre: i.nombre
+            }));
+            data.generos = data.generos.map(g => ({
+                id: g.id,
+                nombre: g.nombre
+            }));
+            return data;
+        });
+
+        res.json({ total: peliculasLimpias.length, peliculas: peliculasLimpias });
+
+    } catch (error) {
+        console.error('Error al obtener películas por ID de género:', error);
+        res.status(500).json({ error: 'Error interno', detalle: error.message });
+    }
+};
+
+
 module.exports = {
     crearPelicula,
     obtenerPeliculas,
@@ -365,5 +539,8 @@ module.exports = {
     eliminarPelicula,
     obtenerPeliculaPorId,
     buscarPeliculas,    
-    obtenerPeliculasRecomendadas
+    obtenerPeliculasRecomendadas,
+    obtenerProximosLanzamientos ,
+    obtenerPeliculaAleatoria,
+    obtenerPeliculasPorIdGenero
 };
