@@ -1,6 +1,8 @@
 // DFS: Punto de entrada del servidor, configura Express y conecta a la base de datos.
 const express = require('express');
 const app = express();
+const cors = require('cors');
+app.use(cors());
 const { sequelize } = require('./models');
 require('dotenv').config();
 
