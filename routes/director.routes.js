@@ -1,22 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const { 
-    obtenerActores, 
-    obtenerActorPorId, 
-    crearActor, 
-    actualizarActor, 
-    eliminarActor 
-} = require('../controllers/actor.controller');
+    obtenerDirectores, 
+    obtenerDirectorPorId, 
+    crearDirector, 
+    actualizarDirector, 
+    eliminarDirector 
+} = require('../controllers/director.controller');
 
 const { verificarToken, soloAdmin } = require('../middlewares/auth.middleware');
 
 // Acceso libre
-router.get('/', obtenerActores);
-router.get('/:id', obtenerActorPorId);
+router.get('/', obtenerDirectores);
+router.get('/:id', obtenerDirectorPorId);
 
 // Solo admin
-router.post('/', verificarToken, soloAdmin, crearActor);
-router.put('/:id', verificarToken, soloAdmin, actualizarActor);
-router.delete('/:id', verificarToken, soloAdmin, eliminarActor);
+router.post('/', verificarToken, soloAdmin, crearDirector);
+router.put('/:id', verificarToken, soloAdmin, actualizarDirector);
+router.delete('/:id', verificarToken, soloAdmin, eliminarDirector);
 
 module.exports = router;

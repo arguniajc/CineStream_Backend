@@ -6,27 +6,30 @@ require('dotenv').config();
 
 app.use(express.json());
 
-// DFS: Importar rutas de autenticación
+// DFS: Importar rutas de autenticación y módulos
 const authRoutes = require('./routes/auth.routes');
 const testRoutes = require('./routes/test.routes');
 const peliculaRoutes = require('./routes/pelicula.routes');
+const peliculaRelacionRoutes = require('./routes/peliculaRelacion.routes'); 
 const actorRoutes = require('./routes/actor.routes');
 const directorRoutes = require('./routes/director.routes');
 const companiaRoutes = require('./routes/compania.routes');
 const generoRoutes = require('./routes/genero.routes');
 const idiomaRoutes = require('./routes/idioma.routes');
 
-
 // DFS: Configurar rutas
 app.use('/api/auth', authRoutes);  
 app.use('/api/test', testRoutes);
-app.use('/api/peliculas', peliculaRoutes);
+app.use('/api/peliculas', peliculaRoutes); // CRUD películas
+app.use('/api/peliculas', peliculaRelacionRoutes); // Relaciones de películas (actores, etc.)
+
 app.use('/api/actores', actorRoutes);
 app.use('/api/directores', directorRoutes);
 app.use('/api/companias', companiaRoutes);
 app.use('/api/generos', generoRoutes);
 app.use('/api/idiomas', idiomaRoutes);
 
+// DFS: Arrancar servidor y conectar BD
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, async () => {
