@@ -1,4 +1,4 @@
-const { dbPrincipal, dbSecundaria, sequelize1, sequelize2 } = require('../config/database');
+const { sequelizePrincipal, sequelizeSecundaria, sequelize1, sequelize2 } = require('../config/database');
 const { DataTypes } = require('sequelize');
 
 const defineModels = (sequelizeInstance) => {
@@ -63,12 +63,12 @@ const defineModels = (sequelizeInstance) => {
 };
 
 // Cargar modelos para base principal y secundaria
-const dbPrincipalModelos = defineModels(dbPrincipal);
-const dbSecundariaModelos = defineModels(dbSecundaria);
+const dbPrincipal = defineModels(sequelizePrincipal);
+const dbSecundaria = defineModels(sequelizeSecundaria);
 
 module.exports = {
-    dbPrincipal: dbPrincipalModelos,
-    dbSecundaria: dbSecundariaModelos,
+    dbPrincipal,
+    dbSecundaria,
     sequelize1,
     sequelize2
 };

@@ -33,23 +33,24 @@ const sequelize2 = new Sequelize(
   }
 );
 
-// 🔄 Selección de principal/secundaria
-let dbPrincipal, dbSecundaria;
+// 🔄 Selección de sequelize principal/secundaria
+let sequelizePrincipal, sequelizeSecundaria;
 
 if (process.env.USE_LOCAL_AS_PRIMARY === 'true') {
-  dbPrincipal = sequelize2;
-  dbSecundaria = sequelize1;
+  sequelizePrincipal = sequelize2;
+  sequelizeSecundaria = sequelize1;
 } else {
-  dbPrincipal = sequelize1;
-  dbSecundaria = sequelize2;
+  sequelizePrincipal = sequelize1;
+  sequelizeSecundaria = sequelize2;
 }
 
 const baseActiva = process.env.USE_LOCAL_AS_PRIMARY === 'true' ? 'LOCAL (CineStream)' : 'REMOTA (Supabase)';
 console.log(`📦 Base PRINCIPAL activa: ${baseActiva}`);
 
+// Exportar las instancias de Sequelize
 module.exports = {
   sequelize1,
   sequelize2,
-  dbPrincipal,
-  dbSecundaria
+  sequelizePrincipal,
+  sequelizeSecundaria
 };
