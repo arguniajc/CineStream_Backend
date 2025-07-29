@@ -1,26 +1,26 @@
 {
   "development": {
     "username": "postgres",
-    "password": "Siesa*2023",
+    "password": "Siesa*2026",
     "database": "CineStream",
     "host": "127.0.0.1",
-    "port": 5432,
+    "port": 5433,
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
-    "password": "Siesa*2023",
+    "password": "Siesa*2026",
     "database": "CineStream",
     "host": "127.0.0.1",
-    "port": 5432,
+    "port": 5433,
     "dialect": "postgres"
   },
   "production": {
     "username": "postgres",
-    "password": "Siesa*2023",
+    "password": "Siesa*2026",
     "database": "CineStream",
     "host": "127.0.0.1",
-    "port": 5432,
+    "port": 5433,
     "dialect": "postgres"
   }
 }
