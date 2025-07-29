@@ -14,7 +14,6 @@ const {
 
 /////////////////////////// ACTORES ///////////////////////////
 
-// DFS: Agrega un actor a una película
 const agregarActor = async (req, res) => {
     const { id } = req.params;
     const { actor_id, personaje } = req.body;
@@ -37,7 +36,6 @@ const agregarActor = async (req, res) => {
     }
 };
 
-// DFS: Edita personaje de un actor asociado
 const editarPersonajeActor = async (req, res) => {
     const { id, actor_id } = req.params;
     const { personaje } = req.body;
@@ -54,7 +52,6 @@ const editarPersonajeActor = async (req, res) => {
     }
 };
 
-// DFS: Elimina actor de película
 const eliminarActor = async (req, res) => {
     const { id, actor_id } = req.params;
 
@@ -72,7 +69,6 @@ const eliminarActor = async (req, res) => {
 
 /////////////////////////// DIRECTORES ///////////////////////////
 
-// DFS: Agrega un director a película
 const agregarDirector = async (req, res) => {
     const { id } = req.params;
     const { director_id } = req.body;
@@ -92,7 +88,6 @@ const agregarDirector = async (req, res) => {
     }
 };
 
-// DFS: Elimina director
 const eliminarDirector = async (req, res) => {
     const { id, director_id } = req.params;
 
@@ -110,7 +105,6 @@ const eliminarDirector = async (req, res) => {
 
 /////////////////////////// COMPAÑÍAS ///////////////////////////
 
-// DFS: Agrega compañía
 const agregarCompania = async (req, res) => {
     const { id } = req.params;
     const { compania_id } = req.body;
@@ -130,7 +124,6 @@ const agregarCompania = async (req, res) => {
     }
 };
 
-// DFS: Elimina compañía
 const eliminarCompania = async (req, res) => {
     const { id, compania_id } = req.params;
 
@@ -148,7 +141,6 @@ const eliminarCompania = async (req, res) => {
 
 /////////////////////////// GÉNEROS ///////////////////////////
 
-// DFS: Agrega género
 const agregarGenero = async (req, res) => {
     const { id } = req.params;
     const { genero_id } = req.body;
@@ -168,7 +160,6 @@ const agregarGenero = async (req, res) => {
     }
 };
 
-// DFS: Elimina género
 const eliminarGenero = async (req, res) => {
     const { id, genero_id } = req.params;
 
@@ -186,7 +177,6 @@ const eliminarGenero = async (req, res) => {
 
 /////////////////////////// IDIOMAS ///////////////////////////
 
-// DFS: Agrega idioma
 const agregarIdioma = async (req, res) => {
     const { id } = req.params;
     const { idioma_id } = req.body;
@@ -206,7 +196,6 @@ const agregarIdioma = async (req, res) => {
     }
 };
 
-// DFS: Elimina idioma
 const eliminarIdioma = async (req, res) => {
     const { id, idioma_id } = req.params;
 

@@ -1,17 +1,24 @@
 const {
+    dbPrincipal
+} = require('../models');
+
+const {
     Pelicula,
     PeliculaActor,
     PeliculaDirector,
     PeliculaCompania,
     PeliculaGenero,
     PeliculaIdioma,
+    sequelize
+} = dbPrincipal;
+
+const {
     Actor,
     Director,
     Compania,
     Genero,
-    Idioma,
-    sequelize
-} = require('../models');
+    Idioma
+} = dbPrincipal;
 
 const { Op } = require('sequelize');
 

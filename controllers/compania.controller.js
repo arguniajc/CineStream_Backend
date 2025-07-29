@@ -1,9 +1,9 @@
-const { Compania } = require('../models');
+const { dbPrincipal } = require('../models');
 
 // ✅ Obtener todas las compañías
 const obtenerCompanias = async (req, res) => {
     try {
-        const companias = await Compania.findAll({
+        const companias = await dbPrincipal.Compania.findAll({
             order: [['id', 'ASC']]
         });
 
@@ -25,7 +25,7 @@ const obtenerCompaniaPorId = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const compania = await Compania.findByPk(id);
+        const compania = await dbPrincipal.Compania.findByPk(id);
 
         if (!compania) {
             return res.status(404).json({ error: 'Compañía no encontrada' });
@@ -49,12 +49,12 @@ const crearCompania = async (req, res) => {
     const { nombre, imagen_url } = req.body;
 
     try {
-        const existente = await Compania.findOne({ where: { nombre } });
+        const existente = await dbPrincipal.Compania.findOne({ where: { nombre } });
         if (existente) {
             return res.status(400).json({ error: 'Ya existe una compañía con ese nombre' });
         }
 
-        const nueva = await Compania.create({ nombre, imagen_url });
+        const nueva = await dbPrincipal.Compania.create({ nombre, imagen_url });
         res.status(201).json({ mensaje: 'Compañía creada', compania: nueva });
     } catch (error) {
         console.error('Error al crear compañía:', error);
@@ -68,7 +68,7 @@ const actualizarCompania = async (req, res) => {
     const { nombre, imagen_url } = req.body;
 
     try {
-        const compania = await Compania.findByPk(id);
+        const compania = await dbPrincipal.Compania.findByPk(id);
 
         if (!compania) {
             return res.status(404).json({ error: 'Compañía no encontrada' });
@@ -87,7 +87,7 @@ const eliminarCompania = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const compania = await Compania.findByPk(id);
+        const compania = await dbPrincipal.Compania.findByPk(id);
 
         if (!compania) {
             return res.status(404).json({ error: 'Compañía no encontrada' });

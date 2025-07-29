@@ -1,9 +1,9 @@
-const { Director } = require('../models');
+const { dbPrincipal } = require('../models');
 
 // ✅ Obtener todos los directores
 const obtenerDirectores = async (req, res) => {
     try {
-        const directores = await Director.findAll({
+        const directores = await dbPrincipal.Director.findAll({
             order: [['id', 'ASC']]
         });
 
@@ -25,7 +25,7 @@ const obtenerDirectorPorId = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const director = await Director.findByPk(id);
+        const director = await dbPrincipal.Director.findByPk(id);
 
         if (!director) {
             return res.status(404).json({ error: 'Director no encontrado' });
@@ -49,12 +49,12 @@ const crearDirector = async (req, res) => {
     const { nombre, imagen_url } = req.body;
 
     try {
-        const existente = await Director.findOne({ where: { nombre } });
+        const existente = await dbPrincipal.Director.findOne({ where: { nombre } });
         if (existente) {
             return res.status(400).json({ error: 'Ya existe un director con ese nombre' });
         }
 
-        const nuevo = await Director.create({ nombre, imagen_url });
+        const nuevo = await dbPrincipal.Director.create({ nombre, imagen_url });
         res.status(201).json({ mensaje: 'Director creado', director: nuevo });
     } catch (error) {
         console.error('Error al crear director:', error);
@@ -68,7 +68,7 @@ const actualizarDirector = async (req, res) => {
     const { nombre, imagen_url } = req.body;
 
     try {
-        const director = await Director.findByPk(id);
+        const director = await dbPrincipal.Director.findByPk(id);
 
         if (!director) {
             return res.status(404).json({ error: 'Director no encontrado' });
@@ -87,7 +87,7 @@ const eliminarDirector = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const director = await Director.findByPk(id);
+        const director = await dbPrincipal.Director.findByPk(id);
 
         if (!director) {
             return res.status(404).json({ error: 'Director no encontrado' });

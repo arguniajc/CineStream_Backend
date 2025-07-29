@@ -1,9 +1,9 @@
-const { Genero } = require('../models');
+const { dbPrincipal } = require('../models');
 
 // ✅ Obtener todos los géneros
 const obtenerGeneros = async (req, res) => {
     try {
-        const generos = await Genero.findAll({
+        const generos = await dbPrincipal.Genero.findAll({
             order: [['id', 'ASC']]
         });
 
@@ -24,7 +24,7 @@ const obtenerGeneroPorId = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const genero = await Genero.findByPk(id);
+        const genero = await dbPrincipal.Genero.findByPk(id);
 
         if (!genero) {
             return res.status(404).json({ error: 'Género no encontrado' });
@@ -47,12 +47,12 @@ const crearGenero = async (req, res) => {
     const { nombre } = req.body;
 
     try {
-        const existente = await Genero.findOne({ where: { nombre } });
+        const existente = await dbPrincipal.Genero.findOne({ where: { nombre } });
         if (existente) {
             return res.status(400).json({ error: 'Ya existe un género con ese nombre' });
         }
 
-        const nuevo = await Genero.create({ nombre });
+        const nuevo = await dbPrincipal.Genero.create({ nombre });
         res.status(201).json({ mensaje: 'Género creado', genero: nuevo });
     } catch (error) {
         console.error('Error al crear género:', error);
@@ -66,7 +66,7 @@ const actualizarGenero = async (req, res) => {
     const { nombre } = req.body;
 
     try {
-        const genero = await Genero.findByPk(id);
+        const genero = await dbPrincipal.Genero.findByPk(id);
 
         if (!genero) {
             return res.status(404).json({ error: 'Género no encontrado' });
@@ -85,7 +85,7 @@ const eliminarGenero = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const genero = await Genero.findByPk(id);
+        const genero = await dbPrincipal.Genero.findByPk(id);
 
         if (!genero) {
             return res.status(404).json({ error: 'Género no encontrado' });

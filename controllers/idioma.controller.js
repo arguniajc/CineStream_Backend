@@ -1,9 +1,9 @@
-const { Idioma } = require('../models');
+const { dbPrincipal } = require('../models');
 
 // ✅ Obtener todos los idiomas
 const obtenerIdiomas = async (req, res) => {
     try {
-        const idiomas = await Idioma.findAll({
+        const idiomas = await dbPrincipal.Idioma.findAll({
             order: [['id', 'ASC']]
         });
 
@@ -24,7 +24,7 @@ const obtenerIdiomaPorId = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const idioma = await Idioma.findByPk(id);
+        const idioma = await dbPrincipal.Idioma.findByPk(id);
 
         if (!idioma) {
             return res.status(404).json({ error: 'Idioma no encontrado' });
@@ -47,12 +47,12 @@ const crearIdioma = async (req, res) => {
     const { nombre } = req.body;
 
     try {
-        const existente = await Idioma.findOne({ where: { nombre } });
+        const existente = await dbPrincipal.Idioma.findOne({ where: { nombre } });
         if (existente) {
             return res.status(400).json({ error: 'Ya existe un idioma con ese nombre' });
         }
 
-        const nuevo = await Idioma.create({ nombre });
+        const nuevo = await dbPrincipal.Idioma.create({ nombre });
         res.status(201).json({ mensaje: 'Idioma creado', idioma: nuevo });
     } catch (error) {
         console.error('Error al crear idioma:', error);
@@ -66,7 +66,7 @@ const actualizarIdioma = async (req, res) => {
     const { nombre } = req.body;
 
     try {
-        const idioma = await Idioma.findByPk(id);
+        const idioma = await dbPrincipal.Idioma.findByPk(id);
 
         if (!idioma) {
             return res.status(404).json({ error: 'Idioma no encontrado' });
@@ -85,7 +85,7 @@ const eliminarIdioma = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const idioma = await Idioma.findByPk(id);
+        const idioma = await dbPrincipal.Idioma.findByPk(id);
 
         if (!idioma) {
             return res.status(404).json({ error: 'Idioma no encontrado' });
