@@ -166,7 +166,7 @@ const crearPelicula = async (req, res) => {
 
 // ✅ Obtener películas con paginación y limpieza
 const obtenerPeliculas = async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit = 1000 } = req.query;
     const offset = (page - 1) * limit;
 
     try {
