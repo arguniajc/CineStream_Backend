@@ -22,10 +22,13 @@ const {
 
 const { Op } = require('sequelize');
 
-// ✅ Obtener películas recomendadas
+// ✅ Obtener películas recomendadas (solo con calificación > 8.0)
 const obtenerPeliculasRecomendadas = async (req, res) => {
     try {
         const peliculas = await Pelicula.findAll({
+            where: {
+                calificacion: { [Op.gt]: 8.0 }  // FILTRO agregado aquí
+            },
             limit: 5,
             order: [['calificacion', 'DESC']],
             include: [
@@ -66,6 +69,7 @@ const obtenerPeliculasRecomendadas = async (req, res) => {
         res.status(500).json({ error: 'Error interno', detalle: error.message });
     }
 };
+
 
 // 🔍 Validar existencia de IDs relacionados
 const validarExistenciaIds = async ({ actores, directores, companias, generos, idiomas }) => {
